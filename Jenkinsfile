@@ -1,4 +1,4 @@
-//jen
+
 pipeline {
   agent any
   stages {
@@ -20,7 +20,7 @@ pipeline {
         withSonarQubeEnv('sonarqube') {
           bat "sonar-scanner"
         }
-        timeout(time: 10, unit: 'MINUTES') {
+        timeout(time: 1, unit: 'MINUTES') {
             waitForQualityGate abortPipeline: true
         }
     }

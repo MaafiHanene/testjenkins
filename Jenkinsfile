@@ -37,14 +37,27 @@ pipeline {
       }
     }
     stage('Deployement') {
-      steps {
+      if (env.CHANGE_ID) {
+   
+      }
+      else {
+        steps {
         bat 'gradle uploadArchives'
       }
+      }
+      
     }
     stage('Slack Notification') {
-      steps {
+      if (env.CHANGE_ID) {
+   
+      }
+      else {
+        steps {
         slackSend()
       }
+      }
+      
     }
+    
   }
 }

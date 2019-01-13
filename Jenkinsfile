@@ -13,8 +13,8 @@ pipeline {
     }
     stage('Code Analysis') {
       steps {
+        bat 'sonar-scanner'
         withSonarQubeEnv('SonarQubeScanner') {
-          bat 'sonar-scanner'
           waitForQualityGate true
         }
 

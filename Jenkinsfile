@@ -75,7 +75,9 @@ pipeline {
     }
 
     stage('Deployement') {
-
+    when {   
+      branch 'master'   
+    } 
       steps {
 
         bat 'gradle uploadArchives'
@@ -85,7 +87,9 @@ pipeline {
     }
 
     stage('Slack Notification') {
-
+    when {   
+      branch 'master'   
+    } 
       steps {
 
         slackSend()

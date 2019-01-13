@@ -12,11 +12,17 @@ pipeline {
       }
     }
     stage('Code Analysis') {
+      environment {
+        scannerHome = tool 'SonarQubeScanner'
+    }
       steps {
         withSonarQubeEnv('sonarqube') {
-          bat 'sonar-scanner'
-          waitForQualityGate true
+          bat "${scannerHome}/bin/sonar-scanner"
         }
+        timeout(time: 10, unit: 'MINUTES') {
+            waitForQualityGate abortPipeline: true
+        }
+    }
 
       }
     }

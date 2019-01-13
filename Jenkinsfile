@@ -1,4 +1,3 @@
-
 pipeline {
   agent any
   stages {
@@ -8,24 +7,33 @@ pipeline {
       }
     }
     stage('Mail Notification') {
-      steps {
-        mail(subject: 'Build jenkins', body: 'New Integration Notification', to: 'fh_maafi@esi.dz', from: 'jenkins-notifications@jenkins.com')
+      parallel {
+        stage('Mail Notification') {
+          steps {
+            mail(subject: 'Build jenkins', body: 'New Integration Notification', to: 'fh_maafi@esi.dz', from: 'jenkins-notifications@jenkins.com')
+          }
+        }
+        stage('TestReporting') {
+          steps {
+            jacoco()
+          }
+        }
       }
     }
     stage('Code Analysis') {
       environment {
-        scannerHome = tool 'SonarQubeScanner'
-    }
+        scannerHome = 'SonarQubeScanner'
+      }
       steps {
         withSonarQubeEnv('sonarqube') {
           bat "${scannerHome}\\sonar-scanner"
         }
+
         timeout(time: 1, unit: 'MINUTES') {
-            waitForQualityGate abortPipeline: true
+          waitForQualityGate true
         }
-    }
 
       }
-    
+    }
   }
 }

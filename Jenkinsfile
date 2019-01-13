@@ -3,36 +3,47 @@ pipeline {
   stages {
     stage('Build') {
       steps {
-        bat 'gradle uploadArchives'
+        bat 'gradle build'
+        bat 'gradle generateMatrixAPI'
       }
     }
     stage('Mail Notification') {
+      steps {
+        mail(subject: 'Build jenkins', body: 'New Integration Notification', to: 'fh_maafi@esi.dz', from: 'jenkins-notifications@jenkins.com')
+      }
+    }
+    stage('Code Analysis') {
       parallel {
-        stage('Mail Notification') {
+        stage('Code Analysis') {
+          environment {
+            scannerHome = 'SonarQubeScanner'
+          }
           steps {
-            mail(subject: 'Build jenkins', body: 'New Integration Notification', to: 'fh_maafi@esi.dz', from: 'jenkins-notifications@jenkins.com')
+            withSonarQubeEnv('sonarqube') {
+              bat "${scannerHome}\\sonar-scanner"
+            }
+
+            timeout(time: 1, unit: 'MINUTES') {
+              waitForQualityGate true
+            }
+
           }
         }
-        stage('TestReporting') {
+        stage('Test Reporting') {
           steps {
             jacoco()
           }
         }
       }
     }
-    stage('Code Analysis') {
-      environment {
-        scannerHome = 'SonarQubeScanner'
-      }
+    stage('Deployement') {
       steps {
-        withSonarQubeEnv('sonarqube') {
-          bat "${scannerHome}\\sonar-scanner"
-        }
-
-        timeout(time: 1, unit: 'MINUTES') {
-          waitForQualityGate true
-        }
-
+        bat 'gradle uploadArchives'
+      }
+    }
+    stage('Slack Notification') {
+      steps {
+        slackSend()
       }
     }
   }

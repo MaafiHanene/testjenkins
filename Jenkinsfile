@@ -3,13 +3,19 @@ pipeline {
   stages {
     stage('Build') {
       steps {
+        
         bat 'gradle build'
         bat 'gradle generateMatrixAPI'
+      }
+      post { 
+        failure {
+          mail(subject: 'Build jenkins', body: 'Build Failure', to: 'fh_maafi@esi.dz', from: 'jenkins-notifications@jenkins.com')
+        }
       }
     }
     stage('Mail Notification') {
       steps {
-        mail(subject: 'Build jenkins', body: 'New Integration Notification', to: 'fh_maafi@esi.dz', from: 'jenkins-notifications@jenkins.com')
+        mail(subject: 'Build jenkins', body: 'Build Success', to: 'fh_maafi@esi.dz', from: 'jenkins-notifications@jenkins.com')
       }
     }
     stage('Code Analysis') {

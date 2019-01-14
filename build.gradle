@@ -9,7 +9,7 @@
 plugins {
     // Apply the java-library plugin to add support for Java Library
     id 'java-library'
-    id 'io.qameta.allure'
+    
 }
 /*apply plugin: "jacoco"*/
 dependencies {
@@ -22,12 +22,10 @@ dependencies {
     // Use JUnit test framework
     testImplementation 'junit:junit:4.12'
     
-    dependencies {
-        classpath "io.qameta.allure:allure-gradle:2.3"
-    }
+    classpath "io.qameta.allure:allure-gradle:<latest>"
 
 }
-
+apply plugin: 'io.qameta.allure'
 // In this section you declare where to find the dependencies of your project
 repositories {
     // Use jcenter for resolving your dependencies.

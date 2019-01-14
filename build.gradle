@@ -22,7 +22,7 @@ dependencies {
     // Use JUnit test framework
     testImplementation 'junit:junit:4.12'
     
-    classpath "io.qameta.allure:allure-gradle:<latest>"
+   
 
 }
 apply plugin: 'io.qameta.allure'
@@ -32,6 +32,9 @@ repositories {
     // You can declare any Maven/Ivy/file repository here.
     jcenter()
 }
+dependencies {
+        classpath "io.qameta.allure:allure-gradle:2.3"
+    }
 
  allure {
         version = '2.2.1'

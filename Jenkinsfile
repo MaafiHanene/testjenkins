@@ -2,15 +2,17 @@ pipeline {
   agent any
   stages {
     stage('Build') {
-      steps {
-        
-        bat 'gradle build'
-        bat 'gradle generateMatrixAPI'
-      }
-      post { 
+      post {
         failure {
           mail(subject: 'Build jenkins', body: 'Build Failure', to: 'fh_maafi@esi.dz', from: 'jenkins-notifications@jenkins.com')
+
         }
+
+      }
+      steps {
+        bat 'gradle build'
+        bat 'gradle generateMatrixAPI'
+        archiveArtifacts 'build/libs/*.jar'
       }
     }
     stage('Mail Notification') {
@@ -22,7 +24,7 @@ pipeline {
       parallel {
         stage('Code Analysis') {
           environment {
-            scannerHome = tool'SonarQubeScanner'
+            scannerHome = 'SonarQubeScanner'
           }
           steps {
             withSonarQubeEnv('sonarqube') {

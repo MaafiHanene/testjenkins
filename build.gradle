@@ -9,7 +9,8 @@
 plugins {
     // Apply the java-library plugin to add support for Java Library
     id 'java-library'
-    
+    id "io.qameta.allure" version "2.5"
+
 }
 /*apply plugin: "jacoco"*/
 dependencies {
@@ -25,9 +26,7 @@ dependencies {
    
 
 }
-plugins {
-  id "io.qameta.allure" version "2.5"
-}
+
 // In this section you declare where to find the dependencies of your project
 repositories {
     // Use jcenter for resolving your dependencies.

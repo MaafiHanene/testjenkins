@@ -9,7 +9,7 @@
 plugins {
     // Apply the java-library plugin to add support for Java Library
     id 'java-library'
-    id "io.qameta.allure" version "2.5"
+   
 
 }
 /*apply plugin: "jacoco"*/
@@ -34,15 +34,7 @@ repositories {
     jcenter()
 }
 
- allure {
-        version = '2.2.1'
-        autoconfigure = true
-     	resultsDir = file('build/allure-results')
-    	reportDir = file('build/reports/allure-report')
-	downloadLink = 'https://dl.bintray.com/qameta/generic/io/qameta/allure/allure/2.2.1/allure-2.2.1.zip'
 
-
-     }
 /*jacocoTestReport {
     group = "Reporting"
     reports {
